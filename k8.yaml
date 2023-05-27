@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+    name: keycloak
+    namespace: argocd
+spec:
+    project: default
+    source:
+        repoURL: 'https://github.com/codecentric/helm-charts'
+        targetRevision: HEAD
+        path: keycloak
+        helm:
+            values: |
+        keycloak:
+          replicas: 1
+          persistence:
+            dbVendor: postgres
+            dbName: keycloak
+            user: keycloak
+            password: keycloak
+    destination:
+        namespace: keycloak
+        server: https://kubernetes.default.svc
+    syncPolicy:
+        automated: {}
